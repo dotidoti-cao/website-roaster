@@ -49,11 +49,11 @@ Paste your competitor's site, your own site, or your boss's startup landing page
 
 ## 🚀 Try It Now
 
-**👉 [tools.pojudao.com/roast.html](https://tools.pojudao.com/roast.html)**
+**[👉 toolscout-site-vert.vercel.app/roast](https://toolscout-site-vert.vercel.app/roast)**
 
-**📖 [阅读背后的故事](https://tools.pojudao.com/roast-article.html)**
+**📖 [阅读背后的故事](https://toolscout-site-vert.vercel.app/roast-article)**
 
-**[📖 Read the story behind it](https://tools.pojudao.com/roast-article.html)**
+**[📖 Read the story](https://toolscout-site-vert.vercel.app/roast-article)**
 
 No sign-up. No download. Just paste a URL and watch the magic happen.
 
@@ -218,11 +218,11 @@ MIT © [Austin Cao (曹春峰)](https://github.com/austincao)
 
 ### 在线体验
 
-**👉 [tools.pojudao.com/roast.html](https://tools.pojudao.com/roast.html)**
+**[👉 toolscout-site-vert.vercel.app/roast](https://toolscout-site-vert.vercel.app/roast)**
 
-**📖 [阅读背后的故事](https://tools.pojudao.com/roast-article.html)**
+**📖 [阅读背后的故事](https://toolscout-site-vert.vercel.app/roast-article)**
 
-**[📖 Read the story behind it](https://tools.pojudao.com/roast-article.html)**
+**[📖 Read the story](https://toolscout-site-vert.vercel.app/roast-article)**
 
 ### 快速自部署
 
