@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Website Roaster 🔥 - AI That Roasts Any Website</title>
+<meta name="description" content="Paste any URL and let AI brutally roast that website. Free, hilarious, and shockingly accurate.">
+<meta property="og:title" content="Website Roaster 🔥 - AI That Roasts Any Website">
+<meta property="og:description" content="Paste any URL and let AI brutally roast that website. Free preview, full report for $19.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tools.pojudao.com/roast.html">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Website Roaster 🔥">
+<meta name="twitter:description" content="AI roasts any website. Brutally honest. Hilariously accurate.">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0d1117;
+  --bg-card: #161b22;
+  --bg-input: #0d1117;
+  --border: #30363d;
+  --text: #e6edf3;
+  --text-muted: #8b949e;
+  --accent: #ff6b35;
+  --accent-hover: #ff8c5a;
+  --green: #3fb950;
+  --red: #f85149;
+  --radius: 12px;
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+
+html { background: var(--bg); }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px 60px;
+  line-height: 1.6;
+}
+
+/* ---- Background glow ---- */
+body::before {
+  content: "";
+  position: fixed; inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,107,53,0.08), transparent 70%);
+  pointer-events: none; z-index: -1;
+}
+
+/* ---- Container ---- */
+.container { width: 100%; max-width: 680px; }
+
+/* ---- Header ---- */
+.header { text-align: center; margin-bottom: 36px; }
+.header .icon { font-size: 56px; margin-bottom: 8px; }
+.header h1 {
+  font-size: 2.4rem; font-weight: 800;
+  background: linear-gradient(135deg, #ff6b35, #ff8c5a, #ffb347);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.header p { color: var(--text-muted); font-size: 1.05rem; margin-top: 6px; }
+
+/* ---- Card ---- */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  margin-bottom: 20px;
+}
+
+/* ---- Input row ---- */
+.input-row { display: flex; gap: 10px; }
+.input-row input {
+  flex: 1;
+  padding: 14px 18px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-size: 1rem;
+  font-family: var(--font);
+  outline: none;
+  transition: border-color .2s;
+}
+.input-row input:focus { border-color: var(--accent); }
+.input-row input::placeholder { color: var(--text-muted); }
+
+/* ---- Buttons ---- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 14px 24px;
+  border: none; border-radius: var(--radius);
+  font-size: 1rem; font-weight: 600; font-family: var(--font);
+  cursor: pointer;
+  transition: all .2s;
+  white-space: nowrap;
+}
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover:not(:disabled) { background: var(--accent-hover); transform: translateY(-1px); }
+.btn-outline {
+  background: transparent; color: var(--accent);
+  border: 2px solid var(--accent);
+}
+.btn-outline:hover:not(:disabled) { background: rgba(255,107,53,0.1); }
+.btn-small { padding: 8px 14px; font-size: 0.85rem; }
+.btn-full { width: 100%; justify-content: center; margin-top: 8px; }
+
+/* ---- Loading ---- */
+.loading {
+  text-align: center; padding: 40px 20px; display: none;
+}
+.loading.active { display: block; }
+.spinner {
+  width: 40px; height: 40px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+  margin: 0 auto 16px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading p { color: var(--text-muted); }
+
+/* ---- Result ---- */
+.result { display: none; }
+.result.active { display: block; }
+
+/* ---- Roast output ---- */
+.roast-box {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  position: relative;
+}
+.roast-box::before {
+  content: "🔥";
+  position: absolute; top: -16px; left: 20px;
+  font-size: 24px;
+  background: var(--bg-card); padding: 0 8px; border-radius: 4px;
+}
+
+/* ---- Site info ---- */
+.site-info {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
+}
+.site-info img {
+  width: 32px; height: 32px; border-radius: 4px;
+  background: var(--border);
+}
+.site-info .site-title {
+  font-weight: 600; font-size: 1.1rem;
+  color: var(--text);
+}
+.site-info .site-url {
+  font-size: 0.85rem; color: var(--text-muted);
+}
+
+/* ---- Share row ---- */
+.share-row { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+.share-row .btn { flex: 1; min-width: 100px; }
+
+/* ---- Upgrade card ---- */
+.upgrade-card {
+  background: linear-gradient(135deg, rgba(255,107,53,0.1), rgba(255,139,90,0.05));
+  border: 1px solid rgba(255,107,53,0.3);
+  border-radius: var(--radius);
+  padding: 24px;
+  text-align: center;
+  margin-top: 20px;
+}
+.upgrade-card h3 { font-size: 1.2rem; margin-bottom: 6px; }
+.upgrade-card p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 16px; }
+.upgrade-card .price {
+  font-size: 2rem; font-weight: 800; color: var(--accent);
+  margin-bottom: 4px;
+}
+.upgrade-card .price-sub { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px; }
+
+/* ---- Footer ---- */
+.footer {
+  text-align: center; margin-top: 48px; color: var(--text-muted); font-size: 0.85rem;
+}
+.footer a { color: var(--accent); text-decoration: none; }
+.footer a:hover { text-decoration: underline; }
+
+/* ---- Toast ---- */
+.toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: var(--green); color: #000;
+  padding: 10px 24px; border-radius: 24px;
+  font-weight: 600; font-size: 0.9rem;
+  opacity: 0; pointer-events: none;
+  transition: opacity .3s;
+  z-index: 100;
+}
+.toast.show { opacity: 1; }
+
+/* ---- Error ---- */
+.error-box {
+  background: rgba(248,81,73,0.1);
+  border: 1px solid var(--red);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  color: var(--red);
+  margin-top: 16px;
+  display: none;
+}
+.error-box.active { display: block; }
+
+/* ---- Responsive ---- */
+@media (max-width: 500px) {
+  .header h1 { font-size: 1.7rem; }
+  .input-row { flex-direction: column; }
+  .share-row .btn { flex: none; width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="icon">🔥</div>
+    <h1>Website Roaster</h1>
+    <p>Drop a URL. Get roasted by AI. No mercy.</p>
+  </div>
+
+  <!-- Input Card -->
+  <div class="card">
+    <div class="input-row">
+      <input
+        id="urlInput"
+        type="text"
+        placeholder="https://example.com — don't be shy"
+        autocomplete="url"
+        autofocus
+      >
+      <button class="btn btn-primary" id="roastBtn" onclick="startRoast()">
+        🔥 Roast It
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <p>Roasting this website... <span id="loadingSite"></span></p>
+  </div>
+
+  <!-- Error -->
+  <div class="error-box" id="errorBox"></div>
+
+  <!-- Result -->
+  <div class="result card" id="result">
+    <div class="site-info" id="siteInfo"></div>
+    <div class="roast-box" id="roastBox"></div>
+    <div class="share-row">
+      <button class="btn btn-outline btn-small" onclick="shareTwitter()">
+        🐦 Tweet This Roast
+      </button>
+      <button class="btn btn-outline btn-small" onclick="copyLink()">
+        📋 Copy Link
+      </button>
+    </div>
+  </div>
+
+  <!-- Upgrade -->
+  <div class="upgrade-card" id="upgradeCard" style="display:none;">
+    <h3>🔥 Want the Full Roast Report?</h3>
+    <p>Get an in-depth, multi-page roast with SEO audit, design critique, UX breakdown, and more.</p>
+    <div class="price">$19</div>
+    <div class="price-sub">One-time payment. No subscription.</div>
+    <a href="https://paypal.me/austincao8624/19" target="_blank" class="btn btn-primary btn-full">
+      💳 Get Full Report — $19
+    </a>
+    <p style="margin-top:10px;font-size:0.8rem;color:var(--text-muted);">
+      After payment, email the receipt + your URL to receive your full roast within 24 hours.
+    </p>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>
+      <a href="https://github.com/austincao/website-roaster" target="_blank">⭐ Star on GitHub</a>
+      &nbsp;·&nbsp;
+      <a href="https://tools.pojudao.com/roast.html" target="_blank">Live Demo</a>
+      &nbsp;·&nbsp;
+      Made with 🔥 by <a href="https://github.com/austincao" target="_blank">@austincao</a>
+    </p>
+  </div>
+
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+const API_URL = "https://tools.pojudao.com/api/roast";
+
+let currentRoast = "";
+let currentUrl = "";
+
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 2500);
+}
+
+function showError(msg) {
+  const el = document.getElementById("errorBox");
+  el.textContent = "⚠️ " + msg;
+  el.classList.add("active");
+}
+
+function hideError() {
+  document.getElementById("errorBox").classList.remove("active");
+}
+
+function setLoading(active, site) {
+  const el = document.getElementById("loading");
+  const siteEl = document.getElementById("loadingSite");
+  if (active) {
+    el.classList.add("active");
+    siteEl.textContent = site ? "(" + site + ")" : "";
+  } else {
+    el.classList.remove("active");
+  }
+}
+
+async function startRoast() {
+  const input = document.getElementById("urlInput");
+  let url = input.value.trim();
+
+  if (!url) {
+    showError("Come on, give me a URL to roast. I promise it'll be fun.");
+    return;
+  }
+
+  // Add https:// if missing
+  if (!/^https?:\/\//i.test(url)) {
+    url = "https://" + url;
+  }
+
+  // Basic validation
+  try {
+    const u = new URL(url);
+    if (!u.hostname.includes(".")) throw new Error();
+  } catch {
+    showError("That doesn't look like a valid URL. Try something like 'example.com'.");
+    return;
+  }
+
+  hideError();
+  document.getElementById("result").classList.remove("active");
+  document.getElementById("upgradeCard").style.display = "none";
+  document.getElementById("roastBtn").disabled = true;
+  setLoading(true, new URL(url).hostname);
+
+  try {
+    const resp = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ url }),
+    });
+
+    const data = await resp.json();
+
+    if (!resp.ok || data.error) {
+      throw new Error(data.error || "Something went wrong on the server.");
+    }
+
+    currentRoast = data.roast;
+    currentUrl = data.url || url;
+
+    // Show site info
+    const siteInfo = document.getElementById("siteInfo");
+    const domain = new URL(currentUrl).hostname;
+    const favicon = "https://www.google.com/s2/favicons?domain=" + domain + "&sz=64";
+    siteInfo.innerHTML =
+      '<img src="' + favicon + '" alt="" onerror="this.style.display=\'none\'">' +
+      '<div><div class="site-title">' + escapeHTML(data.title || domain) + '</div>' +
+      '<div class="site-url">' + escapeHTML(domain) + '</div></div>';
+
+    // Show roast
+    document.getElementById("roastBox").textContent = currentRoast;
+
+    // Show result and upgrade
+    document.getElementById("result").classList.add("active");
+    document.getElementById("upgradeCard").style.display = "block";
+
+  } catch (err) {
+    showError(err.message || "Failed to roast. The AI might be napping. Try again!");
+  } finally {
+    setLoading(false);
+    document.getElementById("roastBtn").disabled = false;
+  }
+}
+
+function shareTwitter() {
+  if (!currentRoast) return;
+  const text = "I just got my website roasted by AI 🔥\n\n" +
+    currentRoast.slice(0, 200).replace(/\n/g, " ") + "...\n\n" +
+    "Roast yours at: https://tools.pojudao.com/roast.html";
+  const url = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(text);
+  window.open(url, "_blank", "width=550,height=420");
+}
+
+function copyLink() {
+  const link = "https://tools.pojudao.com/roast.html?url=" + encodeURIComponent(currentUrl || "");
+  navigator.clipboard.writeText(link).then(() => {
+    showToast("📋 Link copied! Share it with the world.");
+  }).catch(() => {
+    showToast("Failed to copy. Here's the link: " + link);
+  });
+}
+
+function escapeHTML(str) {
+  const div = document.createElement("div");
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// Enter key to submit
+document.getElementById("urlInput").addEventListener("keydown", function(e) {
+  if (e.key === "Enter") startRoast();
+});
+
+// Support ?url= param on load
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const urlParam = params.get("url");
+  if (urlParam) {
+    document.getElementById("urlInput").value = urlParam;
+    startRoast();
+  }
+})();
+</script>
+
+</body>
+</html>
