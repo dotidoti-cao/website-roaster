@@ -49,7 +49,11 @@ Paste your competitor's site, your own site, or your boss's startup landing page
 
 ## 🚀 Try It Now
 
-**[👉 tools.pojudao.com/roast.html](https://tools.pojudao.com/roast.html)**
+**👉 [tools.pojudao.com/roast.html](https://tools.pojudao.com/roast.html)**
+
+**📖 [阅读背后的故事](https://tools.pojudao.com/roast-article.html)**
+
+**[📖 Read the story behind it](https://tools.pojudao.com/roast-article.html)**
 
 No sign-up. No download. Just paste a URL and watch the magic happen.
 
@@ -214,7 +218,11 @@ MIT © [Austin Cao (曹春峰)](https://github.com/austincao)
 
 ### 在线体验
 
-**[👉 tools.pojudao.com/roast.html](https://tools.pojudao.com/roast.html)**
+**👉 [tools.pojudao.com/roast.html](https://tools.pojudao.com/roast.html)**
+
+**📖 [阅读背后的故事](https://tools.pojudao.com/roast-article.html)**
+
+**[📖 Read the story behind it](https://tools.pojudao.com/roast-article.html)**
 
 ### 快速自部署
 
